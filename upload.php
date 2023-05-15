@@ -13,6 +13,10 @@ echo
 ?>
 <?php
 include_once 'includes/dbGallery.inc.php';
+if(empty($spoj2)){
+    $spoj2 = new stdClass();
+
+}
 
 if (isset($_POST['delete'])) {
     $imgId = $_POST['imgId'];

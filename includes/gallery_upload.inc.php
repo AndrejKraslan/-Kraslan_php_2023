@@ -32,6 +32,10 @@ if (isset($_POST['submit'])) {
                 # zistíme ci mozeme nahrat data do db
 
                 include_once "dbGallery.inc.php";
+                if(empty($spoj2)){
+                    $spoj2 = new stdClass();
+
+                }
                 #Kontrola ci nejaká časť formulára je prázdna
                 if (empty($imageTitle) || empty($imageDesc)) {
                     echo "Všetky polia formulára musia byť vyplnené!";

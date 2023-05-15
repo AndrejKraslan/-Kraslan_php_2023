@@ -8,6 +8,10 @@ if (isset($_POST['submit'])) {
 
     require_once 'dbh.inc.php';
     require_once 'functions.inc.php';
+    if(empty($spoj)){
+        $spoj = new stdClass();
+
+    }
 
     if (prazdnyVstup($name, $email, $username, $pwd, $pwdRepeat) !== false) {
         header("location: ../signup.php?error=prazdnyVstup");

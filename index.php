@@ -14,6 +14,10 @@ if (isset($_SESSION["useruid"])) {
 
 <?php
 include_once 'includes/dbGallery.inc.php';
+if(empty($spoj2)){
+    $spoj2 = new stdClass();
+
+}
 $sql = "SELECT * FROM gallery ORDER BY OrderGallery DESC;";
 $vys = mysqli_query($spoj2, $sql);
 while ($row = mysqli_fetch_assoc($vys)) {

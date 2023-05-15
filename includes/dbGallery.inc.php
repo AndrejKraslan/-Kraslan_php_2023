@@ -5,7 +5,7 @@ $password = "";
 $dbname = "gallery-zaver";
 
 $spoj2 = mysqli_connect($servername, $username, $password, $dbname);
+
 if (!$spoj2) {
-    $spoj2 = new stdClass();
     die("Chyba spojenia s databázou: " . mysqli_connect_error());
 }

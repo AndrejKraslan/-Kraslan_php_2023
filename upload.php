@@ -13,6 +13,7 @@ echo
 ?>
 <?php
 include_once 'includes/dbGallery.inc.php';
+
 if(empty($spoj2)){
     $spoj2 = new stdClass();
 
@@ -41,7 +42,7 @@ if (isset($_POST['delete'])) {
     exit();
 }
 
-$sql = "SELECT * FROM gallery ORDER BY OrderGallery DESC;";
+$sql = "SELECT * FROM gallery ORDER BY idGallery DESC;";
 $vys = mysqli_query($spoj2, $sql);
 while ($row = mysqli_fetch_assoc($vys)) {
     echo '<div>

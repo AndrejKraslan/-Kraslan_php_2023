@@ -10,35 +10,32 @@ if (isset($_POST['submit'])) {
     $imageTitle = $_POST['filetitle'];
     $imageDesc = $_POST['filedesc'];
 
-    $file = $_FILES['file'];
+    $file = $_FILES['file']; // info o subore
 
-    $fileName = $file["name"];
-    $fileType = $file["type"];
+    $fileName = $file["name"]; // orig. nazov
+    $fileType = $file["type"]; // jpg...
     $fileTempName = $file["tmp_name"];
     $fileError = $file["error"];
     $fileSize = $file["size"];
 
-    $fileExt = explode(".", $fileName);#odstráni z názvu tú časť za bodkou. a vytvorý array rozdelenú podla bodky
-    $fileActualExt = strtolower(end($fileExt));# Ak bude casť za bodkou CAP tak ju zmení na malé písmená
-    #vytvorý array s povolenýmy koncovkamy
+    $fileExt = explode(".", $fileName);#odstráni z názvu tú časť pred bodkou. a vytvorý pole rozdelene podla bodky
+    $fileActualExt = strtolower(end($fileExt));# Ak bude cast za bodkou CAP tak ju zmení na malé písmená end(ziska poslednu cast z pola)
     $povolene = array("jpg", "jpeg", "png");
-    #osledujeme ci je koncovka v array povolene
-    if (in_array($fileActualExt, $povolene)) {#je právny typ súboru
+
+    if (in_array($fileActualExt, $povolene)) {
         if ($fileError === 0) {
             if ($fileSize < 200000) {
                 #vytvorý unikátny názov súboru aby sa v db nemohol prepísať (filename.id.extention);
-                $imageFullName = $newFileName . "." . uniqid("", true) . $fileActualExt;
+                $imageFullName = $newFileName . "." . uniqid("", true) . $fileActualExt; // true = viac znakov
                 $fileDestination = "../images/gallery/" . $imageFullName;
-                # zistíme ci mozeme nahrat data do db
 
                 include_once "dbGallery.inc.php";
                 if(empty($spoj2)){
-                    $spoj2 = new stdClass();
+                    $spoj2 = new stdClass(); // zakladny objektovy typ
 
                 }
-                #Kontrola ci nejaká časť formulára je prázdna
-                if (empty($imageTitle) || empty($imageDesc)) {
-                    echo "Všetky polia formulára musia byť vyplnené!";
+                 if (empty($imageTitle) || empty($imageDesc)) {
+                     echo "Všetky polia formulára musia byť vyplnené!";
                     exit();
                 } else {
                     $sql = "SELECT * FROM gallery;";
@@ -46,16 +43,13 @@ if (isset($_POST['submit'])) {
                     if (!mysqli_stmt_prepare($stmt, $sql)) {
                         echo "SQL dotaz zlyhal";
                     } else {
-                        mysqli_stmt_execute($stmt);
-                        $result = mysqli_stmt_get_result($stmt);
-                        $rowCount = mysqli_num_rows($result);
-                        $setImageOrder = $rowCount + 1;
 
-                        $sql = "INSERT INTO gallery (titleGallery, descGallery, imgFullNameGallery, OrderGallery) VALUES (?,?,?,?);";
+
+                        $sql = "INSERT INTO gallery (titleGallery, descGallery, imgFullNameGallery) VALUES (?,?,?);";
                         if (!mysqli_stmt_prepare($stmt, $sql)) {
                             echo "SQL dotaz zlyhal";
                         } else {
-                            mysqli_stmt_bind_param($stmt, "ssss", $imageTitle, $imageDesc, $imageFullName, $setImageOrder);
+                            mysqli_stmt_bind_param($stmt, "sss", $imageTitle, $imageDesc, $imageFullName);
                             mysqli_stmt_execute($stmt);
 
                             move_uploaded_file($fileTempName, $fileDestination);

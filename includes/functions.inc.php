@@ -1,7 +1,6 @@
 <?php
 function prazdnyVstup($name, $email, $username, $pwd, $pwdRepeat)
 {
-    $vys = false;
     // ak je prazdny vstup;
     if (empty($name) || empty($email) || empty($username) || empty($pwd) || empty($pwdRepeat)) {
         $vys = true;// ak je prazdny;
@@ -13,7 +12,6 @@ function prazdnyVstup($name, $email, $username, $pwd, $pwdRepeat)
 
 function zleUid($username)
 {
-    $vys = false;
     //ak sa uid nezhoduje s reg. výrazom mame chybu;
     if (!preg_match("/^[a-zA-Z0-9ľščťžýáíéô]*$/u", $username)) {
         $vys = true;
@@ -25,7 +23,6 @@ function zleUid($username)
 
 function zlyEmail($email)
 {
-    $vys = false;
     // sleduje ci je email korektný;
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $vys = true;
@@ -37,7 +34,6 @@ function zlyEmail($email)
 
 function pwdZhoda($pwd, $pwdRepeat)
 {
-    $vys = false;
     if ($pwd !== $pwdRepeat) {
         $vys = true;
     } else {
@@ -105,8 +101,8 @@ function loginUser($spoj, $username, $pwd)
         header("location: ../login.php?error=zlylogin");
         exit();
     }
-    $pwdHashed = $uidExistuje["usersPwd"];
-    $checkPwd = password_verify($pwd, $pwdHashed);
+    $hashedPwd = $uidExistuje["usersPwd"];
+    $checkPwd = password_verify($pwd, $hashedPwd);
 
     if ($checkPwd === false) {
         header("location: ../login.php?error=zleheslo");

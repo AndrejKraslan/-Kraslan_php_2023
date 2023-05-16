@@ -13,7 +13,7 @@ if (isset($_POST["submit"])) {
 
     }
 
-    if (prazdnyVstupLogin($username, $pwd) !== false) {
+    if (prazdnyVstupLogin($username, $pwd) == true) {
         header("location: ../login.php?error=emptyinput");
         exit();
     }

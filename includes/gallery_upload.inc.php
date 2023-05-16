@@ -26,39 +26,33 @@ if (isset($_POST['submit'])) {
         if ($fileError === 0) {
             if ($fileSize < 200000) {
                 #vytvorý unikátny názov súboru aby sa v db nemohol prepísať (filename.id.extention);
-                $imageFullName = $newFileName . "." . uniqid("", true) . $fileActualExt; // true = viac znakov
+                $imageFullName = $newFileName . "." . uniqid("", true) .".". $fileActualExt; // true = viac znakov
                 $fileDestination = "../images/gallery/" . $imageFullName;
 
                 include_once "dbGallery.inc.php";
-                if(empty($spoj2)){
+                if (empty($spoj2)) {
                     $spoj2 = new stdClass(); // zakladny objektovy typ
 
                 }
-                 if (empty($imageTitle) || empty($imageDesc)) {
-                     echo "Všetky polia formulára musia byť vyplnené!";
+                if (empty($imageTitle) || empty($imageDesc)) {
+                    echo "Všetky polia formulára musia byť vyplnené!";
                     exit();
                 } else {
-                    $sql = "SELECT * FROM gallery;";
+                    $sql = "INSERT INTO gallery (titleGallery, descGallery, imgFullNameGallery) VALUES (?,?,?);";
                     $stmt = mysqli_stmt_init($spoj2);
                     if (!mysqli_stmt_prepare($stmt, $sql)) {
                         echo "SQL dotaz zlyhal";
                     } else {
+                        mysqli_stmt_bind_param($stmt, "sss", $imageTitle, $imageDesc, $imageFullName);
+                        mysqli_stmt_execute($stmt);
 
+                        move_uploaded_file($fileTempName, $fileDestination);
 
-                        $sql = "INSERT INTO gallery (titleGallery, descGallery, imgFullNameGallery) VALUES (?,?,?);";
-                        if (!mysqli_stmt_prepare($stmt, $sql)) {
-                            echo "SQL dotaz zlyhal";
-                        } else {
-                            mysqli_stmt_bind_param($stmt, "sss", $imageTitle, $imageDesc, $imageFullName);
-                            mysqli_stmt_execute($stmt);
-
-                            move_uploaded_file($fileTempName, $fileDestination);
-
-                            header("Location: ../index.php?upload=success");
-                        }
-
+                        header("Location: ../index.php?upload=success");
                     }
+
                 }
+
             } else {
                 echo "Súbor je príliš veľký";
                 exit();
@@ -71,5 +65,5 @@ if (isset($_POST['submit'])) {
         echo "Nesprávny typ súboru";
         exit();
     }
-
 }
+

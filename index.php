@@ -12,13 +12,14 @@ if (isset($_SESSION["useruid"])) {
     echo "<p>Vitajte " . $_SESSION["useruid"] . "</p>";
 }
 ?>
-
+<br>
 <?php
 include_once 'includes/dbGallery.inc.php';
 
 if(empty($spoj2)){
     $spoj2 = new stdClass();
 }
+
 $sql = "SELECT * FROM gallery ORDER BY idGallery DESC;";
 $vys = mysqli_query($spoj2, $sql);
 while ($row = mysqli_fetch_assoc($vys)) {

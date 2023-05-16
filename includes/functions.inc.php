@@ -90,13 +90,12 @@ function vytvor($spoj, $name, $email, $username, $pwd)
 
 function prazdnyVstupLogin($username, $pwd)
 {
-    $vys = false;
     if (empty($username) || empty($pwd)) {
         $vys = true;
     } else {
         $vys = false;
     }
-    return $vys;
+     $vys;
 }
 
 function loginUser($spoj, $username, $pwd)

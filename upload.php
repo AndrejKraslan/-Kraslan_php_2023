@@ -16,35 +16,11 @@ include_once 'includes/dbGallery.inc.php';
 
 if(empty($spoj2)){
     $spoj2 = new stdClass();
-
-}
-
-if (isset($_POST['delete'])) {
-    $imgId = $_POST['imgId'];
-
-    // Vymazanie obrázka z databázy
-    $sql = "DELETE FROM gallery WHERE idGallery = ?;";
-    $stmt = mysqli_stmt_init($spoj2);
-    if (!mysqli_stmt_prepare($stmt, $sql)) {
-        echo "SQL dozaz zlyhal";
-    } else {
-        mysqli_stmt_bind_param($stmt, "s", $imgId);
-        mysqli_stmt_execute($stmt);
-    }
-
-    // Vymazanie obrázka zo zložky na serveri
-    $file = "images/gallery/" . $_POST['imgFullNameGallery'];
-    if (!unlink($file)) {
-        echo "Chyba pri vymazávaní súboru";
-    }
-
-    header("Location: index.php?delete=success");
-    exit();
 }
 
 $sql = "SELECT * FROM gallery ORDER BY idGallery DESC;";
 $vys = mysqli_query($spoj2, $sql);
-while ($row = mysqli_fetch_assoc($vys)) {
+while ($row = mysqli_fetch_assoc($vys)) { // kluc je stlpec a hodnota je hodnota v riadku
     echo '<div>
             <img src="images/gallery/' . $row['imgFullNameGallery'] . '" alt="' . $row['titleGallery'] . '">
             <form method="post">
@@ -58,6 +34,29 @@ while ($row = mysqli_fetch_assoc($vys)) {
                 <button type="submit" name="delete">Vymazať</button>
             </form>
           </div>';
+    if (isset($_POST['delete'])) {
+        $imgId = $_POST['imgId'];
+
+        // Vymazanie obrázka z databázy
+        $sql = "DELETE FROM gallery WHERE idGallery = ?;";
+        $stmt = mysqli_stmt_init($spoj2);
+        if (!mysqli_stmt_prepare($stmt, $sql)) {
+            echo "SQL dozaz zlyhal";
+        } else {
+            mysqli_stmt_bind_param($stmt, "s", $imgId);
+            mysqli_stmt_execute($stmt);
+        }
+
+        // Vymazanie obrázka zo zložky na serveri
+        $file = "images/gallery/" . $_POST['imgFullNameGallery']; // cesta
+        if (!unlink($file)) {
+            echo "Chyba pri vymazávaní súboru";
+        }
+
+        header("Location: index.php?delete=success");
+        exit();
+    }
+
     if (isset($_POST['update']) && $_POST['imgId'] == $row['idGallery']) {
         $title = $_POST['title'];
         $desc = $_POST['desc'];

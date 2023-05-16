@@ -22,7 +22,7 @@ if (isset($_GET["error"])) {
     } else if ($_GET["error"] == "stmtfailed") {
         echo "<p>Niečo sa pokazilo, skúste to prosím neskôr!</p>";
     } else if ($_GET["error"] == "puzivatelexistuje") {
-        echo "<p>Užívateľské meno už existuje!</p>";
+        echo "<p>Užívateľské meno/email už existuje!</p>";
     } else if ($_GET["error"] == "none") {
         echo "<p>Úspešne ste sa zaregistrovali.</p>";
     }

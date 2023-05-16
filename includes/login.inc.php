@@ -14,7 +14,7 @@ if (isset($_POST["submit"])) {
     }
 
     if (prazdnyVstupLogin($username, $pwd) == true) {
-        header("location: ../login.php?error=emptyinput");
+        header("location: ../login.php?error=zlylogin");
         exit();
     }
     loginUser($spoj, $username, $pwd);
@@ -23,4 +23,3 @@ if (isset($_POST["submit"])) {
     exit();
 
 }
-//ok

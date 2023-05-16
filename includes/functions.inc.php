@@ -46,7 +46,7 @@ function uidExistuje($spoj, $username, $email)
 {
     // sleduje či uid alebo email už je v dB;
     $sql = "SELECT * FROM users WHERE usersUid = ? OR usersEmail = ?;";
-    $stmt = mysqli_stmt_init($spoj);// inicializácia príkazového objektu;
+    $stmt = mysqli_stmt_init($spoj);// inicializácia
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../signup.php?error=stmtfailed"); # vráti na lokáciu v prípade nesprávneho zadania formuláru
         exit();# zastavý skript
@@ -56,7 +56,7 @@ function uidExistuje($spoj, $username, $email)
     mysqli_stmt_execute($stmt);
     // výsledok dotazu sa uloží do $vysData
     $vysData = mysqli_stmt_get_result($stmt);
-    // riadok z dotazu
+    // riadok
     if ($row = mysqli_fetch_assoc($vysData)) {
         return $row;
     } else {
@@ -69,7 +69,7 @@ function uidExistuje($spoj, $username, $email)
 function vytvor($spoj, $name, $email, $username, $pwd)
 {
     $sql = "INSERT INTO users (usersName, usersEmail, usersUid, usersPwd) VALUES (?,?,?,?);";
-    $stmt = mysqli_stmt_init($spoj);// inicializácia príkazového objektu
+    $stmt = mysqli_stmt_init($spoj);// inicializácia
     if (!mysqli_stmt_prepare($stmt, $sql)) {
         header("location: ../signup.php?error=stmtfailed");
         exit();
@@ -95,9 +95,10 @@ function prazdnyVstupLogin($username, $pwd)
 }
 
 function loginUser($spoj, $username, $pwd)
-{      // ci existuje v dB ;
-    $uidExistuje = uidExistuje($spoj, $username, $username); # Kôly sql dotazu $sql = "SELECT * FROM users WHERE usersUid = ? OR usersEmail = ?;";
-    if ($uidExistuje == false) {
+{
+    // či existuje používateľ v databáze
+    $uidExistuje = uidExistuje($spoj, $username, $username); // Používateľské meno a e-mail sa používajú dvakrát
+    if ($uidExistuje === false) {
         header("location: ../login.php?error=zlylogin");
         exit();
     }
@@ -107,7 +108,7 @@ function loginUser($spoj, $username, $pwd)
     if ($checkPwd === false) {
         header("location: ../login.php?error=zleheslo");
         exit();
-    } else if ($checkPwd === true) {#sessions
+    } else if ($checkPwd === true) {
         session_start();
         $_SESSION["userid"] = $uidExistuje["usersId"];
         $_SESSION["useruid"] = $uidExistuje["usersUid"];

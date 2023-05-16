@@ -5,10 +5,10 @@ if (isset($_POST['submit'])) {
     $username = $_POST['uid'];
     $pwd = $_POST['pwd'];
     $pwdRepeat = $_POST['pwdrepeat'];
-
+    //zahrnutie ext. suborov
     require_once 'dbh.inc.php';
     require_once 'functions.inc.php';
-
+    // prazdny objekt ak je $spoj prazdna
     if(empty($spoj)){
         $spoj = new stdClass();
     }
@@ -36,7 +36,7 @@ if (isset($_POST['submit'])) {
 
     // Hash hesla pred uložením do databázy
     $hashedPwd = password_hash($pwd, PASSWORD_DEFAULT);
-    vytvor($spoj, $name, $email, $username, $hashedPwd);
+    vytvor($spoj, $name, $email, $username, $pwd);
 } else {
     header("location: ../signup.php");
     exit();

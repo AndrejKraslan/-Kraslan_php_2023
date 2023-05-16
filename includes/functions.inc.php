@@ -91,13 +91,13 @@ function prazdnyVstupLogin($username, $pwd)
     } else {
         $vys = false;
     }
-     $vys;
+     return $vys;
 }
 
 function loginUser($spoj, $username, $pwd)
 {
     // či existuje používateľ v databáze
-    $uidExistuje = uidExistuje($spoj, $username, $username); // Používateľské meno a e-mail sa používajú dvakrát
+    $uidExistuje = uidExistuje($spoj, $username, $username);
     if ($uidExistuje === false) {
         header("location: ../login.php?error=zlylogin");
         exit();
